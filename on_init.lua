@@ -41,8 +41,9 @@ BRIO.GetPlayerRIO = function(fullname)
     profile = profile[1]
     if profile == nil then return end
     
+    local mainScore = 0
     local score = profile.profile.mplusCurrent.score
-    local mainScore = profile.profile.mplusMainCurrent.score
+    mainScore = profile.profile.mplusMainCurrent.score
     
     if rioShort then 
         score = score / 1000
@@ -53,12 +54,13 @@ BRIO.GetPlayerRIO = function(fullname)
     scoreString = scoreColor .. score;
     mainScoreString = BRIO.GetColorString(mainScore) .. mainScore;
     
-    if mainScore ~= nil then 
-        local scoreString = string.format(rioShort and rioFormat or "%s \124r | %s", scoreString, mainScoreString)
-    elseif true then
-        local scoreString = string.format(rioShort and rioFormat or "%s", scoreString)
+    if mainScore > 0 then 
+        scoreString = string.format("%s \124r | %s", scoreString, mainScoreString)
     end
     
+    if mainScore <= 0 then
+        scoreString = string.format("%s", scoreString)
+    end
     return scoreString, scoreColor
 end
 aura_env.UpdateApplicant = function(button, id)
